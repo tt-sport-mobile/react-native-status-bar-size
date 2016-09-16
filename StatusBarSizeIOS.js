@@ -14,7 +14,7 @@ var DEVICE_STATUS_BAR_HEIGHT_EVENTS = {
   change: 'statusBarSizeDidChange'
 };
 
-var _statusBarSizeHandlers = {};
+var _statusBarSizeHandlers = Map<Function, Object> = new Map();
 var noop = function() {};
 
 /**
@@ -70,12 +70,12 @@ var StatusBarSizeIOS = {
     type: string,
     handler: Function
   ) {
-    _statusBarSizeHandlers[handler] = StatusBarEmitter.addListener(
+    _statusBarSizeHandlers.set(handler, StatusBarEmitter.addListener(
       DEVICE_STATUS_BAR_HEIGHT_EVENTS[type],
       (statusBarSizeData) => {
         handler(statusBarSizeData.height);
       }
-    );
+    ));
   },
 
   /**
@@ -85,11 +85,10 @@ var StatusBarSizeIOS = {
     type: string,
     handler: Function
   ) {
-    if (!_statusBarSizeHandlers[handler]) {
+    if (!_statusBarSizeHandlers.get(handler)) {
       return;
     }
-    _statusBarSizeHandlers[handler].remove();
-    _statusBarSizeHandlers[handler] = null;
+    _statusBarSizeHandlers.delete(handler);
   },
 
   currentHeight: (null : ?number),
