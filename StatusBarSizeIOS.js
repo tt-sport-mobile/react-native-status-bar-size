@@ -14,7 +14,7 @@ var DEVICE_STATUS_BAR_HEIGHT_EVENTS = {
   change: 'statusBarSizeDidChange'
 };
 
-var _statusBarSizeHandlers = Map<Function, Object> = new Map();
+var _statusBarSizeHandlers: Map<Function, Object> = new Map();
 var noop = function() {};
 
 /**
